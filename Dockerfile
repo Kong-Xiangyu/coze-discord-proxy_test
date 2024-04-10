@@ -27,6 +27,11 @@ RUN apk --no-cache add ca-certificates tzdata
 # 从构建阶段复制可执行文件
 COPY --from=builder /coze-discord-proxy .
 
+# 配置多机器人
+# FROM deanxv/coze-discord-proxy:latest
+RUN mkdir -p /app/coze-discord-proxy/data/config && chmod 777 /app/coze-discord-proxy/data/config
+RUN printf '%s' "$BOT_CONFIG" | sed 's/\\/"/g' > /app/coze-discord-proxy/data/config/bot_config.jsons
+
 # 暴露端口
 EXPOSE 7077
 # 工作目录
